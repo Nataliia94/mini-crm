@@ -31,5 +31,13 @@ class TicketController extends Controller
 
         return new TicketResource($ticket);
     }
+    public function statistics()
+    {
+    return response()->json([
+        'today' => Ticket::whereDate('created_at', today())->count(),
+        'week' => Ticket::whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count(),
+        'month' => Ticket::whereMonth('created_at', now()->month)->count()
+    ]);
+   }
     
 }
