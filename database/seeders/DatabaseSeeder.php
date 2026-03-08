@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Customer;
 use App\Models\Ticket;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,5 +19,8 @@ class DatabaseSeeder extends Seeder
     Customer::factory(10)->create();
 
     Ticket::factory(20)->create();
+
+    Role::create(['name' => 'admin']);
+    Role::create(['name' => 'manager']);
 }
 }
