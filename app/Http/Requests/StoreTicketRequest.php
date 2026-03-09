@@ -23,10 +23,13 @@ class StoreTicketRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:50',
+             'phone' => [
+              'required',
+              'regex:/^\+[1-9]\d{1,14}$/'
+              ],
             'email' => 'required|email',
             'subject' => 'required|string|max:255',
-            'text' => 'required|string'
+            'text' => 'required|string|max:1000'
         ];
     }
 }
