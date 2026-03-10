@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Ticket;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Resources\TicketResource;
+use App\Services\TicketService;
 
 
 class TicketController extends Controller

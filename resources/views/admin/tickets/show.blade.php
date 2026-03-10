@@ -58,10 +58,9 @@ Update
 
 @foreach($ticket->getMedia('files') as $file)
     <p>
-        <a href="{{ $file->getUrl() }}" target="_blank">
-            {{ $file->file_name }}<br>
-            Download file
-        </a>
+        <a href="{{ $file->getUrl() }}" download>
+       {{ $file->file_name }}
+       </a>
     </p>
 @endforeach
 
