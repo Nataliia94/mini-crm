@@ -1,14 +1,15 @@
 <?php
-
 namespace App\Models;
 use Carbon\Carbon;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ticket extends Model
+class Ticket extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\TicketFactory> */
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     protected $fillable = [
         'customer_id',
@@ -18,11 +19,12 @@ class Ticket extends Model
         'manager_reply_at'
     ];
 
-    public function customer()
-    {
+
+public function customer()
+{
         return $this->belongsTo(Customer::class);
-    }
-    public function scopeToday($query)
+}
+ public function scopeToday($query)
 {
     return $query->whereDate('created_at', Carbon::today());
 }

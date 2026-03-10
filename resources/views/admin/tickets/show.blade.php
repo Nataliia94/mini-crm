@@ -19,7 +19,7 @@
 
 <p>
 <strong>Message:</strong><br>
-{{ $ticket->message }}
+{{ $ticket->text }}
 </p>
 
 <p>
@@ -54,6 +54,16 @@ Update
 </form>
 
 <br>
+<h3>Files</h3>
+
+@foreach($ticket->getMedia('files') as $file)
+    <p>
+        <a href="{{ $file->getUrl() }}" target="_blank">
+            {{ $file->file_name }}<br>
+            Download file
+        </a>
+    </p>
+@endforeach
 
 <a href="/admin/tickets">
 Back to list

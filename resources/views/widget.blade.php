@@ -85,30 +85,6 @@ button:hover {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </style>
 </head>
 <body>
@@ -119,36 +95,66 @@ button:hover {
 
 <div id="message"></div>
 
-<form id="feedbackForm">
+<form id="feedbackForm" enctype="multipart/form-data">
     <input name="name" placeholder="Name" required>
     <input name="email" type="email" placeholder="Email" required>
-    <input name="phone" placeholder="Phone">
+    <input name="phone" placeholder="Phone" required>
     <input name="subject" placeholder="Subject" required>
     <textarea name="text" placeholder="Message" required rows="5"></textarea>
+    <input type="file" name="file">
     <button type="submit">Send Message</button>
 </form>
 
 </div>
 
 <script>
-document.getElementById('feedbackForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    let form = new FormData(this);
+const formElement = document.getElementById('feedbackForm');
 
-    fetch('http://127.0.0.1:8000/api/tickets', {
+formElement.addEventListener('submit', function(e){
+
+    e.preventDefault();
+
+    const formData = new FormData(formElement);
+
+    fetch('/api/tickets', {
         method: 'POST',
-        body: form
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
     })
-    .then(response => response.json())
+
+    .then(async response => {
+
+        const text = await response.text();
+        console.log(text); // покаже відповідь сервера
+
+        if(!response.ok){
+            throw new Error(text);
+        }
+
+        return JSON.parse(text);
+
+    })
+
     .then(data => {
+
         document.getElementById('message').innerHTML =
             '<div class="success">Message sent successfully</div>';
-        document.getElementById('feedbackForm').reset();
+
+        formElement.reset();
+
     })
+
     .catch(error => {
+
+        console.log(error);
+
         document.getElementById('message').innerHTML =
             '<div class="error">Error sending message</div>';
+
     });
+
 });
 </script>
 

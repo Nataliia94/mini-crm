@@ -29,6 +29,11 @@ class TicketController extends Controller
             'status' => 'new'
         ]);
 
+     if ($request->hasFile('file')) {
+         $ticket->addMedia($request->file('file'))
+       ->toMediaCollection('files');
+    }
+
         return new TicketResource($ticket);
     }
     public function statistics()
