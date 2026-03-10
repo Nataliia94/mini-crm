@@ -17,4 +17,37 @@
   Text:  Hello Hello Hello Hello Hello 
   file (опціонально)
 
-3.
+3.Вставка віджета:
+ <iframe src="http://127.0.0.1:8000/widget" width="400" height="500" frameborder="0"> </iframe>
+
+ 4. Приклади API (Postman)
+     POST http://127.0.0.1:8000/api/tickets
+     Body
+     form-data
+     Body
+☑ form-data
+
+name      | Text | user
+email     | Text | user@gmail.com
+phone     | Text | +380960000000
+subject   | Text |  subject
+text      | Text | elllllllllllllllllllllllllllllllllllllooooooooooooo
+file      | File | 
+
+JSON
+{
+    "data": {
+        "id": 64,
+        "subject": "subject",
+        "text": "helllllllllllllllllllllllllllllllllllllooooooooooooo",
+        "status": "new",
+        "customer": {
+            "name": "user",
+            "email": "user@gmail.com",
+            "phone": "+380960020000"
+        },
+        "created_at": "2026-03-10T20:14:59.000000Z"
+    }
+}
+
+     
