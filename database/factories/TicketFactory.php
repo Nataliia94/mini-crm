@@ -21,6 +21,7 @@ class TicketFactory extends Factory
             'subject' => fake()->sentence(),
             'text' => fake()->paragraph(),
             'status' => 'new',
+            'created_at' => now(),
         ];
     }
 }
