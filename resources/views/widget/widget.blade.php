@@ -151,7 +151,7 @@ formElement.addEventListener('submit', function(e){
         console.log(error);
 
         document.getElementById('message').innerHTML =
-            '<div class="error">Error sending message</div>';
+            '<div class="error">Невірний формат телефону чи email</div>';
 
     });
 

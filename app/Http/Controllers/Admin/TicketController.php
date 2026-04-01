@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Enums\TicketStatus;
 
 class TicketController extends Controller
 {
@@ -13,15 +15,15 @@ class TicketController extends Controller
         $query = Ticket::with('customer');
 
         if ($request->email) {
-            $query->whereHas('customer', function ($q) use ($request) {
-                $q->where('email', $request->email);
-            });
+            $query->whereHas('customer', fn($q) =>
+                $q->where('email', $request->email)
+            );
         }
 
         if ($request->phone) {
-            $query->whereHas('customer', function ($q) use ($request) {
-                $q->where('phone', $request->phone);
-            });
+            $query->whereHas('customer', fn($q) =>
+                $q->where('phone', $request->phone)
+            );
         }
 
         if ($request->status) {
@@ -40,10 +42,18 @@ class TicketController extends Controller
 
     public function updateStatus(Request $request, Ticket $ticket)
     {
-        $ticket->update([
-            'status' => $request->status
+        $request->validate([
+            'status' => ['required', Rule::in(TicketStatus::values())]
         ]);
 
-        return redirect()->back()->with('success', 'Status updated');
+        $data = ['status' => $request->status];
+
+        if ($request->status === TicketStatus::PROCESSED->value) {
+            $data['manager_reply_at'] = now();
+        }
+
+        $ticket->update($data);
+
+        return back()->with('success', 'Status updated');
     }
 }

@@ -25,7 +25,7 @@
         <option value="">All</option>
         <option value="new">New</option>
         <option value="in_progress">In progress</option>
-        <option value="closed">Closed</option>
+        <option value="processed">Processed</option>
     </select>
 
     <button type="submit">Filter</button>

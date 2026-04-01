@@ -3,47 +3,33 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Customer;
-use App\Models\Ticket;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Resources\TicketResource;
 use App\Services\TicketService;
-
+use App\DTO\TicketData;
+use App\Models\Ticket;
 
 class TicketController extends Controller
 {
+    public function __construct(
+        private TicketService $ticketService
+    ) {}
+
     public function store(StoreTicketRequest $request)
     {
-        $customer = Customer::firstOrCreate(
-            ['email' => $request->email],
-            [
-                'name' => $request->name,
-                'phone' => $request->phone
-            ]
-        );
+        $data = TicketData::fromRequest($request);
 
-        $ticket = Ticket::create([
-            'customer_id' => $customer->id,
-            'subject' => $request->subject,
-            'text' => $request->text,
-            'status' => 'new'
-        ]);
-
-     if ($request->hasFile('file')) {
-         $ticket->addMedia($request->file('file'))
-       ->toMediaCollection('files');
-    }
+        $ticket = $this->ticketService->create($data);
 
         return new TicketResource($ticket);
     }
+
     public function statistics()
     {
-    return response()->json([
-        'today' => Ticket::whereDate('created_at', today())->count(),
-        'week' => Ticket::whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count(),
-        'month' => Ticket::whereMonth('created_at', now()->month)->count()
-    ]);
-   }
-    
+        return response()->json([
+            'today' => Ticket::today()->count(),
+            'week' => Ticket::week()->count(),
+            'month' => Ticket::month()->count()
+        ]);
+    }
 }
