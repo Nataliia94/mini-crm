@@ -146,14 +146,17 @@ formElement.addEventListener('submit', function(e){
 
     })
 
-    .catch(error => {
+    .catch(async error => {
+    let msg = 'Помилка';
 
-        console.log(error);
+    try {
+        const data = JSON.parse(error.message);
+        msg = Object.values(data.errors).flat().join('<br>');
+    } catch (e) {}
 
-        document.getElementById('message').innerHTML =
-            '<div class="error">Невірний формат телефону чи email</div>';
-
-    });
+    document.getElementById('message').innerHTML =
+        `<div class="error">${msg}</div>`;
+});
 
 });
 </script>
